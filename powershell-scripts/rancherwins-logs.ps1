@@ -1,0 +1,1 @@
+get-winevent -providername rancher-wins | select-object TimeCreated,Message | format-table -wrap

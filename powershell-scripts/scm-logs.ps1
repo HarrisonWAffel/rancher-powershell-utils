@@ -1,0 +1,1 @@
+Get-Eventlog -LogName System -source 'Service Control Manager' | Select-Object TimeWritten,Message | Format-Table -Wrap

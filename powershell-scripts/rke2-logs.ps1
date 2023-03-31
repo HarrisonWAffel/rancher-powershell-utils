@@ -1,0 +1,1 @@
+get-eventlog -logname Application -source rke2 | select-object TimeWritten,ReplacementStrings | format-table -wrap
