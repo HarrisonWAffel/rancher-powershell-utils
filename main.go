@@ -3,7 +3,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -91,20 +90,9 @@ func main() {
 func setScriptAlias(cmds []cmd, filesPath string) error {
 	// creates or appends to a profile.ps1 file and adds
 	// aliases to the newly written commands
-	found := true
-	f, err := os.OpenFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
-	if errors.Is(err, os.ErrNotExist) {
-		found = false
-	} else if err != nil {
+	f, err := os.OpenFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
 		return err
-	}
-
-	if !found {
-		// create new file
-		f, err = os.Create("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
-		if err != nil {
-			return err
-		}
 	}
 
 	currentFile, err := os.ReadFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")

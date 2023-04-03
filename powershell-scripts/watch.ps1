@@ -1,7 +1,7 @@
 # This script is the powershell equivilent to the linux 'watch' command
 
 # n - number of seconds between refreshes. Default is 2
-param([Parameter(Mandatory=$false)][Int32]$n=2)
+param([Int32]$n=2)
 
 while (1) {
     clear
