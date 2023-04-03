@@ -92,7 +92,7 @@ func setScriptAlias(cmds []cmd, filesPath string) error {
 	// creates or appends to a profile.ps1 file and adds
 	// aliases to the newly written commands
 	found := true
-	f, err := os.Open("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
+	f, err := os.OpenFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
 	if errors.Is(err, os.ErrNotExist) {
 		found = false
 	} else if err != nil {
