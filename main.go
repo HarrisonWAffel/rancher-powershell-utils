@@ -9,9 +9,8 @@ import (
 	"strings"
 )
 
-// this file just writes embedded files to disk and adds them to the path
-// it exists so we can do a single curl and get all the files at once
-// it also adds all the commands to your profile if they aren't there already
+// this file exists so we can do a single curl and get all the files at once
+// it also adds all the commands to the global profile if they aren't there already
 
 type cmd struct {
 	filename string
@@ -95,16 +94,19 @@ func setScriptAlias(cmds []cmd, filesPath string) error {
 		return err
 	}
 
-	currentFile, err := os.ReadFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
+	currentFileContents, err := os.ReadFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
 	if err != nil {
 		return err
 	}
 
 	for _, c := range cmds {
-		if strings.Contains(string(currentFile), fmt.Sprintf("Set-Alias %s %s\n", c.name, filepath.Join(filesPath, c.filename))) {
+		aliasCmd := fmt.Sprintf("Set-Alias %s %s\n", c.name, filepath.Join(filesPath, c.filename))
+
+		if strings.Contains(string(currentFileContents), aliasCmd) {
 			continue
 		}
-		_, err = f.WriteString(fmt.Sprintf("Set-Alias %s %s\n", c.name, filepath.Join(filesPath, c.filename)))
+
+		_, err = f.WriteString(aliasCmd)
 		if err != nil {
 			panic(err)
 		}
@@ -114,7 +116,6 @@ func setScriptAlias(cmds []cmd, filesPath string) error {
 }
 
 func writeFiles(cmd []cmd, wd string) error {
-	var res []string
 	for _, c := range cmd {
 		// write files to disk
 		f, err := os.Create(c.filename)
@@ -127,8 +128,6 @@ func writeFiles(cmd []cmd, wd string) error {
 			return err
 		}
 
-		st, _ := f.Stat()
-		res = append(res, filepath.Join(wd, st.Name()))
 		if err = f.Close(); err != nil {
 			return err
 		}
