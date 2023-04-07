@@ -2,74 +2,12 @@
 
 package main
 
-import (
-	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
-)
-
-// this file exists so we can do a single curl and get all the files at once
-// it also adds all the commands to the global profile if they aren't there already
-
-type cmd struct {
-	filename string
-	name     string
-	content  string
-}
+// this file just writes embedded files to disk and adds them to the powershell profile
+// This is useful as it allows us to do single curl and get all the files at once
+//
+// to add new files into the binary `go generate`
 
 func main() {
-	var cmds = []cmd{
-		{
-			filename: "rancher-wins-logs.ps1",
-			name:     "rancher-wins-logs",
-			content:  winsLogs,
-		},
-		{
-			filename: "watch.ps1",
-			name:     "watch",
-			content:  watch,
-		},
-		{
-			filename: "rke2-logs.ps1",
-			name:     "rke2-logs",
-			content:  rke2Logs,
-		},
-		{
-			filename: "install-core-gui.ps1",
-			name:     "install-gui",
-			content:  installCoreGUI,
-		},
-		{
-			filename: "formatted-winevent.ps1",
-			name:     "format-winevent",
-			content:  formattedWinEvent,
-		},
-		{
-			filename: "get-service-start-times.ps1",
-			name:     "service-start-times",
-			content:  serviceStartTimes,
-		},
-		{
-			filename: "get-redirected-disks.ps1",
-			name:     "redirected-disks",
-			content:  getRedirectedDisks,
-		},
-		{
-			filename: "get-cpu-load.ps1",
-			name:     "cpu-load",
-			content:  cpuLoadPercentage,
-		},
-		{
-			filename: "scm-logs.ps1",
-			name:     "scm-logs",
-			content:  scmLogs,
-		},
-	}
-
-	// all of these files are going to
-	// be written in the same directory
-	// as the executable
 	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
@@ -94,19 +32,16 @@ func setScriptAlias(cmds []cmd, filesPath string) error {
 		return err
 	}
 
-	currentFileContents, err := os.ReadFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
+	currentFile, err := os.ReadFile("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\profile.ps1")
 	if err != nil {
 		return err
 	}
 
 	for _, c := range cmds {
-		aliasCmd := fmt.Sprintf("Set-Alias %s %s\n", c.name, filepath.Join(filesPath, c.filename))
-
-		if strings.Contains(string(currentFileContents), aliasCmd) {
+		if strings.Contains(string(currentFile), fmt.Sprintf("Set-Alias %s %s\n", c.name, filepath.Join(filesPath, c.filename))) {
 			continue
 		}
-
-		_, err = f.WriteString(aliasCmd)
+		_, err = f.WriteString(fmt.Sprintf("Set-Alias %s %s\n", c.name, filepath.Join(filesPath, c.filename)))
 		if err != nil {
 			panic(err)
 		}
@@ -116,6 +51,7 @@ func setScriptAlias(cmds []cmd, filesPath string) error {
 }
 
 func writeFiles(cmd []cmd, wd string) error {
+	var res []string
 	for _, c := range cmd {
 		// write files to disk
 		f, err := os.Create(c.filename)
@@ -128,6 +64,8 @@ func writeFiles(cmd []cmd, wd string) error {
 			return err
 		}
 
+		st, _ := f.Stat()
+		res = append(res, filepath.Join(wd, st.Name()))
 		if err = f.Close(); err != nil {
 			return err
 		}
