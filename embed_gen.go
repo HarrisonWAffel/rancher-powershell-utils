@@ -15,9 +15,6 @@ var get_redirected_disks string
 //go:embed powershell-scripts/get-service-start-times.ps1
 var get_service_start_times string
 
-//go:embed powershell-scripts/get-winevent-formatted-message.ps1
-var get_winevent_formatted_message string
-
 //go:embed powershell-scripts/install-core-gui.ps1
 var install_core_gui string
 
@@ -38,6 +35,9 @@ var show_hotfixes string
 
 //go:embed powershell-scripts/show-rdp-port.ps1
 var show_rdp_port string
+
+//go:embed powershell-scripts/watch-rke2-service.ps1
+var watch_rke2_service string
 
 //go:embed powershell-scripts/watch.ps1
 var watch string
@@ -64,10 +64,6 @@ var cmds = []cmd{{
 	content:  get_service_start_times,
 	filename: "get-service-start-times.ps1",
 	name:     "get-service-start-times",
-}, {
-	content:  get_winevent_formatted_message,
-	filename: "get-winevent-formatted-message.ps1",
-	name:     "get-winevent-formatted-message",
 }, {
 	content:  install_core_gui,
 	filename: "install-core-gui.ps1",
@@ -96,6 +92,10 @@ var cmds = []cmd{{
 	content:  show_rdp_port,
 	filename: "show-rdp-port.ps1",
 	name:     "show-rdp-port",
+}, {
+	content:  watch_rke2_service,
+	filename: "watch-rke2-service.ps1",
+	name:     "watch-rke2-service",
 }, {
 	content:  watch,
 	filename: "watch.ps1",

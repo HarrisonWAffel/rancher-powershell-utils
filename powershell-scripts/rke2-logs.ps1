@@ -1,1 +1,1 @@
-get-eventlog -logname Application -source rke2 | select-object TimeWritten,ReplacementStrings | format-table -wrap
+Get-Eventlog -LogName Application -Source rke2 | Select-Object TimeWritten,ReplacementStrings | Format-Table -Wrap
