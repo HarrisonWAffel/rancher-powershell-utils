@@ -3,11 +3,11 @@ package main
 
 import _ "embed"
 
-//go:embed powershell-scripts/cpu-load-percentage.ps1
-var cpu_load_percentage string
-
 //go:embed powershell-scripts/enable-rdp.ps1
 var enable_rdp string
+
+//go:embed powershell-scripts/get-cpu-load.ps1
+var get_cpu_load string
 
 //go:embed powershell-scripts/get-redirected-disks.ps1
 var get_redirected_disks string
@@ -15,17 +15,17 @@ var get_redirected_disks string
 //go:embed powershell-scripts/get-service-start-times.ps1
 var get_service_start_times string
 
+//go:embed powershell-scripts/getLogs-rancherwins.ps1
+var getLogs_rancherwins string
+
+//go:embed powershell-scripts/getLogs-rke2.ps1
+var getLogs_rke2 string
+
+//go:embed powershell-scripts/getLogs-scm.ps1
+var getLogs_scm string
+
 //go:embed powershell-scripts/install-core-gui.ps1
 var install_core_gui string
-
-//go:embed powershell-scripts/rancherwins-logs.ps1
-var rancherwins_logs string
-
-//go:embed powershell-scripts/rke2-logs.ps1
-var rke2_logs string
-
-//go:embed powershell-scripts/scm-logs.ps1
-var scm_logs string
 
 //go:embed powershell-scripts/set-rdp-port.ps1
 var set_rdp_port string
@@ -49,13 +49,13 @@ type cmd struct {
 }
 
 var cmds = []cmd{{
-	content:  cpu_load_percentage,
-	filename: "cpu-load-percentage.ps1",
-	name:     "cpu-load-percentage",
-}, {
 	content:  enable_rdp,
 	filename: "enable-rdp.ps1",
 	name:     "enable-rdp",
+}, {
+	content:  get_cpu_load,
+	filename: "get-cpu-load.ps1",
+	name:     "get-cpu-load",
 }, {
 	content:  get_redirected_disks,
 	filename: "get-redirected-disks.ps1",
@@ -65,21 +65,21 @@ var cmds = []cmd{{
 	filename: "get-service-start-times.ps1",
 	name:     "get-service-start-times",
 }, {
+	content:  getLogs_rancherwins,
+	filename: "getLogs-rancherwins.ps1",
+	name:     "getLogs-rancherwins",
+}, {
+	content:  getLogs_rke2,
+	filename: "getLogs-rke2.ps1",
+	name:     "getLogs-rke2",
+}, {
+	content:  getLogs_scm,
+	filename: "getLogs-scm.ps1",
+	name:     "getLogs-scm",
+}, {
 	content:  install_core_gui,
 	filename: "install-core-gui.ps1",
 	name:     "install-core-gui",
-}, {
-	content:  rancherwins_logs,
-	filename: "rancherwins-logs.ps1",
-	name:     "rancherwins-logs",
-}, {
-	content:  rke2_logs,
-	filename: "rke2-logs.ps1",
-	name:     "rke2-logs",
-}, {
-	content:  scm_logs,
-	filename: "scm-logs.ps1",
-	name:     "scm-logs",
 }, {
 	content:  set_rdp_port,
 	filename: "set-rdp-port.ps1",
