@@ -24,36 +24,17 @@ func main() {
 	// import embed package for side effects
 	f.Anon("embed")
 
-	// grab all the scripts to be embedded
-	dir, err := os.ReadDir("powershell-scripts")
-	if err != nil {
-		panic(fmt.Errorf("Could not find PowerShell directory: %w", err))
-	}
-
-	// create embedded variables
-	for _, file := range dir {
-		f.Comment(fmt.Sprintf("//go:embed %s", "powershell-scripts/"+file.Name()))
-		f.Var().
-			Id(strings.ReplaceAll(strings.ReplaceAll(file.Name(), ".ps1", ""), "-", "_")).
-			String()
-	}
+	dir := createEmbedsForDirectory("powershell-scripts", false, f)
+	devDir := createEmbedsForDirectory("powershell-scripts/development", true, f)
 
 	//create the cmd struct
 	f.Type().Id("cmd").Struct(
 		jen.Id("filename").String(),
 		jen.Id("name").String(),
-		jen.Id("content").String())
+		jen.Id("content").String(),
+		jen.Id("developmentScript").Bool())
 
-	// create the list of embedded variables
-	f.Var().Id("cmds").Op("=").Id("[]cmd").ValuesFunc(func(group *jen.Group) {
-		for _, file := range dir {
-			group.Values(jen.Dict{
-				jen.Id("filename"): jen.Lit(file.Name()),
-				jen.Id("name"):     jen.Lit(strings.ReplaceAll(file.Name(), ".ps1", "")),
-				jen.Id("content"):  jen.Id(strings.ReplaceAll(strings.ReplaceAll(file.Name(), ".ps1", ""), "-", "_")),
-			})
-		}
-	})
+	CreateVars(f, dir, devDir)
 
 	goFile := os.Getenv("GOFILE")
 	ext := filepath.Ext(goFile)
@@ -62,4 +43,49 @@ func main() {
 
 	// no need to remove old file, will be updated on f.Save
 	f.Save(targetFilename)
+}
+
+type ScriptDirs struct {
+	Dirs          []os.DirEntry
+	isDevelopment bool
+}
+
+func CreateVars(f *jen.File, dirs ...ScriptDirs) {
+	f.Var().Id("cmds").Op("=").Id("[]cmd").ValuesFunc(func(group *jen.Group) {
+		for _, dir := range dirs {
+			for _, file := range dir.Dirs {
+				if file.IsDir() {
+					continue
+				}
+				group.Values(jen.Dict{
+					jen.Id("filename"):          jen.Lit(file.Name()),
+					jen.Id("name"):              jen.Lit(strings.ReplaceAll(file.Name(), ".ps1", "")),
+					jen.Id("content"):           jen.Id(strings.ReplaceAll(strings.ReplaceAll(file.Name(), ".ps1", ""), "-", "_")),
+					jen.Id("developmentScript"): jen.Lit(dir.isDevelopment),
+				})
+			}
+		}
+	})
+}
+
+func createEmbedsForDirectory(scriptDir string, isDevelopment bool, f *jen.File) ScriptDirs {
+	// grab all the scripts to be embedded
+	dir, err := os.ReadDir(scriptDir)
+	if err != nil {
+		panic(fmt.Errorf("Could not find PowerShell directory: %w", err))
+	}
+	// create embedded variables
+	for _, file := range dir {
+		if file.IsDir() {
+			continue
+		}
+		f.Comment(fmt.Sprintf("//go:embed %s", fmt.Sprintf("%s/"+file.Name(), scriptDir)))
+		f.Var().
+			Id(strings.ReplaceAll(strings.ReplaceAll(file.Name(), ".ps1", ""), "-", "_")).
+			String()
+	}
+	return ScriptDirs{
+		Dirs:          dir,
+		isDevelopment: isDevelopment,
+	}
 }

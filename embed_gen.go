@@ -42,62 +42,84 @@ var watch_rke2_service string
 //go:embed powershell-scripts/watch.ps1
 var watch string
 
+//go:embed powershell-scripts/development/test.ps1
+var test string
+
 type cmd struct {
-	filename string
-	name     string
-	content  string
+	filename          string
+	name              string
+	content           string
+	developmentScript bool
 }
 
 var cmds = []cmd{{
-	content:  enable_rdp,
-	filename: "enable-rdp.ps1",
-	name:     "enable-rdp",
+	content:           enable_rdp,
+	developmentScript: false,
+	filename:          "enable-rdp.ps1",
+	name:              "enable-rdp",
 }, {
-	content:  get_cpu_load,
-	filename: "get-cpu-load.ps1",
-	name:     "get-cpu-load",
+	content:           get_cpu_load,
+	developmentScript: false,
+	filename:          "get-cpu-load.ps1",
+	name:              "get-cpu-load",
 }, {
-	content:  get_redirected_disks,
-	filename: "get-redirected-disks.ps1",
-	name:     "get-redirected-disks",
+	content:           get_redirected_disks,
+	developmentScript: false,
+	filename:          "get-redirected-disks.ps1",
+	name:              "get-redirected-disks",
 }, {
-	content:  get_service_start_times,
-	filename: "get-service-start-times.ps1",
-	name:     "get-service-start-times",
+	content:           get_service_start_times,
+	developmentScript: false,
+	filename:          "get-service-start-times.ps1",
+	name:              "get-service-start-times",
 }, {
-	content:  getLogs_rancherwins,
-	filename: "getLogs-rancherwins.ps1",
-	name:     "getLogs-rancherwins",
+	content:           getLogs_rancherwins,
+	developmentScript: false,
+	filename:          "getLogs-rancherwins.ps1",
+	name:              "getLogs-rancherwins",
 }, {
-	content:  getLogs_rke2,
-	filename: "getLogs-rke2.ps1",
-	name:     "getLogs-rke2",
+	content:           getLogs_rke2,
+	developmentScript: false,
+	filename:          "getLogs-rke2.ps1",
+	name:              "getLogs-rke2",
 }, {
-	content:  getLogs_scm,
-	filename: "getLogs-scm.ps1",
-	name:     "getLogs-scm",
+	content:           getLogs_scm,
+	developmentScript: false,
+	filename:          "getLogs-scm.ps1",
+	name:              "getLogs-scm",
 }, {
-	content:  install_core_gui,
-	filename: "install-core-gui.ps1",
-	name:     "install-core-gui",
+	content:           install_core_gui,
+	developmentScript: false,
+	filename:          "install-core-gui.ps1",
+	name:              "install-core-gui",
 }, {
-	content:  set_rdp_port,
-	filename: "set-rdp-port.ps1",
-	name:     "set-rdp-port",
+	content:           set_rdp_port,
+	developmentScript: false,
+	filename:          "set-rdp-port.ps1",
+	name:              "set-rdp-port",
 }, {
-	content:  show_hotfixes,
-	filename: "show-hotfixes.ps1",
-	name:     "show-hotfixes",
+	content:           show_hotfixes,
+	developmentScript: false,
+	filename:          "show-hotfixes.ps1",
+	name:              "show-hotfixes",
 }, {
-	content:  show_rdp_port,
-	filename: "show-rdp-port.ps1",
-	name:     "show-rdp-port",
+	content:           show_rdp_port,
+	developmentScript: false,
+	filename:          "show-rdp-port.ps1",
+	name:              "show-rdp-port",
 }, {
-	content:  watch_rke2_service,
-	filename: "watch-rke2-service.ps1",
-	name:     "watch-rke2-service",
+	content:           watch_rke2_service,
+	developmentScript: false,
+	filename:          "watch-rke2-service.ps1",
+	name:              "watch-rke2-service",
 }, {
-	content:  watch,
-	filename: "watch.ps1",
-	name:     "watch",
+	content:           watch,
+	developmentScript: false,
+	filename:          "watch.ps1",
+	name:              "watch",
+}, {
+	content:           test,
+	developmentScript: true,
+	filename:          "test.ps1",
+	name:              "test",
 }}
