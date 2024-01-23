@@ -1,15 +1,14 @@
 param(
     [Boolean]$addToProfile=$false,
-    [Boolean]$deleteFromProfile=$false,
     [String]$utilFilesPath="$env:USERPROFILE\AppData\Local\Temp\Rancher",
-    [String]$UtilsVersion="v1.1"
+    [String]$utilsVersion="v1.1"
 )
 
 $ErrorActionPreference = 'Stop'
 
 if (!(Test-Path "rancher-powershell-utilities.exe")) {
     # download the binary
-    wget "https://github.com/harrisonwaffel/rancher-powershell-utils/releases/$UtilsVersion/rancher-powershell-utilities.exe" -outfile rancher-utilities.exe
+    wget "https://github.com/harrisonwaffel/rancher-powershell-utils/releases/$utilsVersion/rancher-powershell-utilities.exe" -outfile rancher-utilities.exe
 }
 
 if ($useProfile) {
