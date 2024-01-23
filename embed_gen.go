@@ -3,9 +3,6 @@ package main
 
 import _ "embed"
 
-//go:embed powershell-scripts/enable-rdp.ps1
-var enable_rdp string
-
 //go:embed powershell-scripts/get-cpu-load.ps1
 var get_cpu_load string
 
@@ -24,9 +21,6 @@ var getLogs_rke2 string
 //go:embed powershell-scripts/getLogs-scm.ps1
 var getLogs_scm string
 
-//go:embed powershell-scripts/install-core-gui.ps1
-var install_core_gui string
-
 //go:embed powershell-scripts/set-rdp-port.ps1
 var set_rdp_port string
 
@@ -42,8 +36,23 @@ var watch_rke2_service string
 //go:embed powershell-scripts/watch.ps1
 var watch string
 
-//go:embed powershell-scripts/development/test.ps1
-var test string
+//go:embed powershell-scripts/development/enable-rdp.ps1
+var enable_rdp string
+
+//go:embed powershell-scripts/development/install-chocolatey.ps1
+var install_chocolatey string
+
+//go:embed powershell-scripts/development/install-core-gui.ps1
+var install_core_gui string
+
+//go:embed powershell-scripts/development/install-docker.ps1
+var install_docker string
+
+//go:embed powershell-scripts/development/install-git.ps1
+var install_git string
+
+//go:embed powershell-scripts/development/install-go.ps1
+var install_go string
 
 type cmd struct {
 	filename          string
@@ -53,11 +62,6 @@ type cmd struct {
 }
 
 var cmds = []cmd{{
-	content:           enable_rdp,
-	developmentScript: false,
-	filename:          "enable-rdp.ps1",
-	name:              "enable-rdp",
-}, {
 	content:           get_cpu_load,
 	developmentScript: false,
 	filename:          "get-cpu-load.ps1",
@@ -88,11 +92,6 @@ var cmds = []cmd{{
 	filename:          "getLogs-scm.ps1",
 	name:              "getLogs-scm",
 }, {
-	content:           install_core_gui,
-	developmentScript: false,
-	filename:          "install-core-gui.ps1",
-	name:              "install-core-gui",
-}, {
 	content:           set_rdp_port,
 	developmentScript: false,
 	filename:          "set-rdp-port.ps1",
@@ -118,8 +117,33 @@ var cmds = []cmd{{
 	filename:          "watch.ps1",
 	name:              "watch",
 }, {
-	content:           test,
+	content:           enable_rdp,
 	developmentScript: true,
-	filename:          "test.ps1",
-	name:              "test",
+	filename:          "enable-rdp.ps1",
+	name:              "enable-rdp",
+}, {
+	content:           install_chocolatey,
+	developmentScript: true,
+	filename:          "install-chocolatey.ps1",
+	name:              "install-chocolatey",
+}, {
+	content:           install_core_gui,
+	developmentScript: true,
+	filename:          "install-core-gui.ps1",
+	name:              "install-core-gui",
+}, {
+	content:           install_docker,
+	developmentScript: true,
+	filename:          "install-docker.ps1",
+	name:              "install-docker",
+}, {
+	content:           install_git,
+	developmentScript: true,
+	filename:          "install-git.ps1",
+	name:              "install-git",
+}, {
+	content:           install_go,
+	developmentScript: true,
+	filename:          "install-go.ps1",
+	name:              "install-go",
 }}
