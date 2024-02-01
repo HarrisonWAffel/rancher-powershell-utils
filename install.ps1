@@ -1,7 +1,7 @@
 param(
     [Boolean]$addToProfile=$false,
     [String]$utilFilesPath="$env:USERPROFILE\AppData\Local\Temp\Rancher",
-    [String]$utilsVersion="v1.1"
+    [String]$utilsVersion="v1.1.0"
 )
 
 $ErrorActionPreference = 'Stop'
