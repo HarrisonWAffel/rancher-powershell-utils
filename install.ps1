@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 
 if (!(Test-Path "rancher-powershell-utilities.exe")) {
     # download the binary
-    wget "https://github.com/harrisonwaffel/rancher-powershell-utils/releases/$utilsVersion/rancher-powershell-utilities.exe" -outfile rancher-utilities.exe
+    Invoke-WebRequest "https://github.com/HarrisonWAffel/rancher-powershell-utils/releases/download/$utilsVersion/rancher-powershell-utilities.exe" -outfile rancher-powershell-utilities.exe
 }
 
 if ($useProfile) {

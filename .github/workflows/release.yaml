@@ -8,10 +8,10 @@
       steps:
         - uses: actions/checkout@v1
         - name: Build
-          run: go build -o rancher-windows-utilities.exe
+          run: go build -o rancher-powershell-utilities.exe
         - uses: marvinpinto/action-automatic-releases@d68defdd11f9dcc7f52f35c1b7c236ee7513bcc1
           with:
             prerelease: false
             repo_token: ${{ github.token }}
             files: |
-              rancher-windows-utilities.exe
+              rancher-powershell-utilities.exe
