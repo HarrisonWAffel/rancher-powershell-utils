@@ -1,0 +1,33 @@
+# Useful for testing monitoring windows workloads being created and destroyed randomly - helps add random data to graphs
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: random-hostprocess-container
+  name: random-hostprocess-container
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: random-hostprocess-container
+  template:
+    metadata:
+      labels:
+        app: random-hostprocess-container
+      name: random-hostprocess-container
+    spec:
+      hostNetwork: true
+      containers:
+        - name: random-hostprocess-container
+          image: mcr.microsoft.com/windows/servercore:ltsc2022
+          securityContext:
+            windowsOptions:
+              hostProcess: true
+              runAsUserName: "NT AUTHORITY\\SYSTEM"
+          command:
+            - powershell.exe
+            - -command
+            - "sleep $(Get-Random -Maximum 43200 -Minimum 60)"
+      nodeSelector:
+        kubernetes.io/os: windows

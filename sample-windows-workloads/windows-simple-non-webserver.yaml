@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: win-simple
+  name: win-simple
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: win-simple
+  template:
+    metadata:
+      labels:
+        app: win-simple
+      name: win-simple-deployment
+    spec:
+      containers:
+        - name: simple-sleep
+          image: mcr.microsoft.com/windows/nanoserver:ltsc2022
+          command:
+            - "cmd.exe"
+            - "timeout 50000"
+      nodeSelector:
+        kubernetes.io/os: windows

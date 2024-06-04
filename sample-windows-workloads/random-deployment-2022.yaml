@@ -1,0 +1,28 @@
+  # Useful for testing monitoring windows workloads being created and destroyed randomly - helps add random data to graphs
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: win-webserver
+    name: win-webserver
+    namespace: default
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: win-webserver
+    template:
+      metadata:
+        labels:
+          app: win-webserver
+        name: win-webserver
+      spec:
+        containers:
+          - name: windowswebserver
+            image: mcr.microsoft.com/windows/servercore:ltsc2022
+            command:
+              - powershell.exe
+              - -command
+              - "while(1){Write-Host OK; sleep 25;}"
+        nodeSelector:
+          kubernetes.io/os: windows

@@ -6,7 +6,7 @@ metadata:
   name: win-webserver
   namespace: default
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: win-webserver
@@ -16,8 +16,13 @@ spec:
         app: win-webserver
       name: win-webserver
     spec:
+      hostNetwork: true
       containers:
         - name: windowswebserver
+          securityContext:
+            windowsOptions:
+              hostProcess: true
+              runAsUserName: "NT AUTHORITY\\SYSTEM"
           image: mcr.microsoft.com/windows/servercore:ltsc2022
           command:
             - powershell.exe

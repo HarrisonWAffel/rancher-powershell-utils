@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: win-hostprocess-test
+  name: win-hostprocess-test
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: win-hostprocess-test
+  template:
+    metadata:
+      labels:
+        app: win-hostprocess-test
+      name: win-hostprocess-test
+    spec:
+      hostNetwork: true
+      containers:
+        - name: host-process
+          securityContext:
+            windowsOptions:
+              hostProcess: true
+              runAsUserName: "NT AUTHORITY\\SYSTEM"
+          image: mcr.microsoft.com/oss/kubernetes/windows-host-process-containers-base-image:v1.0.0
+          command:
+            - "ping /t 127.0.0.1 >NUL"
+      nodeSelector:
+        kubernetes.io/os: windows

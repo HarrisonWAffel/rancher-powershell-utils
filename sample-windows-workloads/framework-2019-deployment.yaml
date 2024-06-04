@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: win-framework-snapshottest
+  name: win-framework-snapshottest
+  namespace: default
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: win-framework-snapshottest
+  template:
+    metadata:
+      labels:
+        app: win-framework-snapshottest
+      name: win-framework-snapshottest
+    spec:
+      containers:
+        - name: win-framework-snapshottest
+          image: mcr.microsoft.com/dotnet/framework/samples
+      nodeSelector:
+        kubernetes.io/os: windows
