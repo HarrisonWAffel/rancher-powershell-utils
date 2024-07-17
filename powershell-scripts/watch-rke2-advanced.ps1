@@ -1,0 +1,1 @@
+Get-WinEvent -LogName Application -FilterXPath "*[System[Provider[@Name='rke2']]]" -MaxEvents 120 | Sort-Object TimeCreated | Select-Object TimeCreated, @{Name='AllProperties';Expression={($_.Properties | ForEach-Object { $_.Value }) -join ', '}}

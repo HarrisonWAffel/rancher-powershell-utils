@@ -8,9 +8,13 @@ import (
 	"strings"
 )
 
+var l log
+
 func main() {
 	path := flag.String("script-path", fmt.Sprintf("%s\\AppData\\Local\\Temp\\Rancher", os.Getenv("USERPROFILE")), "Where the embedded scripts will be written to")
 	addDevScripts := flag.Bool("add-development-scripts", false, "Adds scripts focusing on development to the host")
+	executedFromInstallScript := flag.Bool("installed-via-script", false, "Disables specific logs when run via the install script. When enabled, the only output will be the command needed to add these scripts to the path")
+	l.executedFromInstallScript = *executedFromInstallScript
 
 	flag.Parse()
 	fullPath := *path
@@ -26,7 +30,19 @@ func main() {
 		panic(err)
 	}
 
+	l.print("Install complete! Run the following command to add the scripts to your PATH")
 	fmt.Println(getUpdatePathCommand(fullPath))
+}
+
+type log struct {
+	executedFromInstallScript bool
+}
+
+func (l log) print(s string) {
+	if l.executedFromInstallScript {
+		return
+	}
+	fmt.Println(s)
 }
 
 func getUpdatePathCommand(fullPath string) string {
@@ -61,6 +77,8 @@ func writeFiles(cmd []cmd, wd string, addDev bool) error {
 		if err = f.Close(); err != nil {
 			return err
 		}
+
+		l.print(fmt.Sprintf("Added script %s to %s", c.name, wd))
 	}
 
 	return nil

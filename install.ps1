@@ -1,7 +1,7 @@
 param(
     [Boolean]$addToProfile=$false,
     [String]$utilFilesPath="$env:USERPROFILE\AppData\Local\Temp\Rancher",
-    [String]$utilsVersion="v1.1.0"
+    [String]$utilsVersion="v1.2.0"
 )
 
 $ErrorActionPreference = 'Stop'
@@ -15,7 +15,7 @@ if ($useProfile) {
     # update the default powershell profile. Useful for
     # ensuring you have access to debugging scripts across sessions
     # and reboots
-    $updatedPath = $(./rancher-powershell-utilities.exe --script-path $utilFilesPath)
+    $updatedPath = $(./rancher-powershell-utilities.exe --script-path $utilFilesPath --installed-via-script true)
     if ($updatedPath -contains "panic") {
         Write-Host "Error encountered staging scripts $updatedPath"
         exit 1
@@ -45,7 +45,7 @@ if ($useProfile) {
     # Update the Path temporarily. Useful for short term debugging
     # on non-development machines, or machines which do not need
     # these scripts forever
-    $updatedPath = $(./rancher-powershell-utilities.exe --script-path $utilFilesPath)
+    $updatedPath = $(./rancher-powershell-utilities.exe --script-path $utilFilesPath --installed-via-script true)
     if ($updatedPath -contains "panic") {
         Write-Host "Error encountered staging scripts $updatedPath"
         exit 1

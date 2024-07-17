@@ -5,13 +5,11 @@
   jobs:
     release:
       runs-on: windows-2022
+      env:
+        GH_TOKEN: ${{ github.token }}
       steps:
         - uses: actions/checkout@v1
         - name: Build
           run: go build -o rancher-powershell-utilities.exe
-        - uses: marvinpinto/action-automatic-releases@d68defdd11f9dcc7f52f35c1b7c236ee7513bcc1
-          with:
-            prerelease: false
-            repo_token: ${{ github.token }}
-            files: |
-              rancher-powershell-utilities.exe
+        - name: Create GH Release
+          run: gh release create ${{ github.ref_name }} --verify-tag --generate-notes rancher-powershell-utilities.exe install.ps1

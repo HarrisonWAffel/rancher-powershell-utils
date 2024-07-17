@@ -30,11 +30,17 @@ var show_hotfixes string
 //go:embed powershell-scripts/show-rdp-port.ps1
 var show_rdp_port string
 
+//go:embed powershell-scripts/watch-rke2-advanced.ps1
+var watch_rke2_advanced string
+
 //go:embed powershell-scripts/watch-rke2-service.ps1
 var watch_rke2_service string
 
 //go:embed powershell-scripts/watch.ps1
 var watch string
+
+//go:embed powershell-scripts/development/dump-hnsdiag.ps1
+var dump_hnsdiag string
 
 //go:embed powershell-scripts/development/enable-rdp.ps1
 var enable_rdp string
@@ -53,6 +59,9 @@ var install_git string
 
 //go:embed powershell-scripts/development/install-go.ps1
 var install_go string
+
+//go:embed powershell-scripts/development/prepare-custom-rke2-install.ps1
+var prepare_custom_rke2_install string
 
 type cmd struct {
 	filename          string
@@ -107,6 +116,11 @@ var cmds = []cmd{{
 	filename:          "show-rdp-port.ps1",
 	name:              "show-rdp-port",
 }, {
+	content:           watch_rke2_advanced,
+	developmentScript: false,
+	filename:          "watch-rke2-advanced.ps1",
+	name:              "watch-rke2-advanced",
+}, {
 	content:           watch_rke2_service,
 	developmentScript: false,
 	filename:          "watch-rke2-service.ps1",
@@ -116,6 +130,11 @@ var cmds = []cmd{{
 	developmentScript: false,
 	filename:          "watch.ps1",
 	name:              "watch",
+}, {
+	content:           dump_hnsdiag,
+	developmentScript: true,
+	filename:          "dump-hnsdiag.ps1",
+	name:              "dump-hnsdiag",
 }, {
 	content:           enable_rdp,
 	developmentScript: true,
@@ -146,4 +165,9 @@ var cmds = []cmd{{
 	developmentScript: true,
 	filename:          "install-go.ps1",
 	name:              "install-go",
+}, {
+	content:           prepare_custom_rke2_install,
+	developmentScript: true,
+	filename:          "prepare-custom-rke2-install.ps1",
+	name:              "prepare-custom-rke2-install",
 }}
